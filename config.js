@@ -53,7 +53,7 @@ var toReturn = {
 		soldierEnergyShieldMax: 0,
 		shieldLayersUsed: 0,
 		fighting: false,
-		health: 50,
+		health: 5000,
 		attack: 6,
 		block: 0,
 		autoBattle: false,
@@ -493,13 +493,14 @@ var toReturn = {
 			world = (game.global.mapsActive) ? world.level : game.global.world;
 			var attackBase = (game.global.universe == 2) ? 750 : 50;
 			amt += attackBase * Math.sqrt(world) * Math.pow(3.27, world / 2);
-			amt -= 10;
+			amt -= 12;
 			if (world == 1){
-				amt *= 0.35;
+				amt *= 0.5;
 				amt = (amt * 0.20) + ((amt * 0.75) * (level / 100));
+				amt += 1
 			}
 			else if (world == 2){
-				amt *= 0.5;
+				amt *= 4.5;
 				amt = (amt * 0.32) + ((amt * 0.68) * (level / 100));
 			}
 			else if (world < 60)
@@ -828,34 +829,34 @@ var toReturn = {
 		boosts: {
 			name: "Bone Shrine",
 			get text(){
-				return "Gain 1 Bone Charge every " + prettify(this.chargeTime(true)) + " hours, up to a max of 10 Bone Charges that persist through Portals. Consume 1 Bone Charge to gain " + prettify(this.timeGranted()) + " minutes of all primary resources as loot. Gain +10 mins per level, levels 5 and 10 reduce time to gain a charge by 30 minutes each." 
+				return "Gain 1 Bone Charge every " + prettify(this.chargeTime(true)) + " hours, up to a max of 99 Bone Charges that persist through Portals. Consume 1 Bone Charge to gain " + prettify(this.timeGranted()) + " minutes of all primary resources as loot. Gain +2 mins per level, levels 5 and 10 reduce time to gain a charge by 10 minutes each." 
 			},
 			get confirmation(){
-				var text = "You are about to purchase a level of Bone Shrine, granting +10 minutes of primary resources as loot when worshipping the Shrine"
-				if (this.owned == 4 || this.owned == 9) text += ", and -30 minutes on the cooldown time per charge";
+				var text = "You are about to purchase a level of Bone Shrine, granting +2 minutes of primary resources as loot when worshipping the Shrine"
+				if (this.owned == 4 || this.owned == 9) text += ", and -10 minutes on the cooldown time per charge";
 				text += ". Is this what you wanted to do?";
 				return text;
 			},
 			timeGranted: function(){
-				if (this.owned == 0) return 10;
-				return 10 * this.owned;
+				if (this.owned == 0) return 2;
+				return 2 * this.owned;
 			},
 			chargeTime: function(hoursOnly){
-				var hours = 4;
-				hours -= (Math.floor(this.owned / 5) * 0.5);
+				var hours = 0.5;
+				hours -= (Math.floor(this.owned / 5) * 0.1);
 				if (hoursOnly) return hours;
 				return (hours * 3.6e6); // to ms
 			},
 			btnTooltip: function(){
 				var text = "";
 				text += "Click this button or press (O/o) to use a Bone Charge by worshipping at the Bone Shrine. Will grant " + this.timeGranted() + " minutes of gathering for Food, Wood, and Metal as loot, meaning they get bonuses that apply to gathering AND looting. Will automatically build any storage buildings required to hold your spoils, and deduct their prices from the pot.<br/><br/>In total, will grant <b>" + this.consume(true) + "</b><br/><br/>";
-				if (this.charges == 10) text += "Currently at maximum charges!";
+				if (this.charges == 99) text += "Currently at maximum charges!";
 				else text += "You currently have <b>" + this.charges + "</b> Charge" + needAnS(this.charges) + ". Will gain " + ((this.charges == 0) ? "a" : "another") + " charge in " + formatMinutesForDescriptions(this.checkCharges(true) / 60000) + ".";
 
 				return text;
 			},
 			checkCharges: function(getTime){
-				if (this.charges == 10){
+				if (this.charges == 99){
 					this.lastChargeAt = -1;
 					return;
 				}
@@ -875,7 +876,7 @@ var toReturn = {
 					var charges = Math.floor(msSinceCharge / chargeMs);
 					this.charges += charges;
 					this.lastChargeAt += (charges * chargeMs);
-					if (this.charges > 10) this.charges = 10;
+					if (this.charges > 99) this.charges = 99;
 					this.updateBtn();
 				}
 			},
@@ -890,7 +891,7 @@ var toReturn = {
 				}
 				elem.style.display = 'block';
 				elem.innerHTML = this.charges + " Bone Charge" + needAnS(this.charges);
-				var className = (this.charges == 0) ? 'isEmpty' : ((this.charges < 10) ? 'isFilling' : 'isFull');
+				var className = (this.charges == 0) ? 'isEmpty' : ((this.charges < 99) ? 'isFilling' : 'isFull');
 				swapClass('is', className, elem);
 			},
 			consume: function(previewOnly){
@@ -1034,6 +1035,15 @@ var toReturn = {
 				onToggle: function () {
 					document.getElementById("tab5Text").innerHTML = "+" + prettify(game.global.lastCustomAmt);
 				}
+
+			
+			},
+
+long: {
+				enabled: 1,
+				extraTags: "layout",
+				description: "warning: this will cause a mess",
+				titles: ["long", "regular"]
 			},
 			tooltips: {
 				enabled: 1,
@@ -2007,6 +2017,7 @@ var toReturn = {
 			description: "Double the chance for a Megaskeletimp to appear instead of a Skeletimp.",
 			name: "King of Bones I",
 			tier: 3,
+
 			purchased: false,
 			icon: "italic",
 		},
@@ -2622,8 +2633,8 @@ var toReturn = {
 			heliumSpent: 0,
 			radLevel: 0,
 			radSpent: 0,
-			tooltip: "You have overcome the otherworldly objective of obtaining Overkill, outstanding! Each level of this perk will allow 0.5% of your overkill damage to harm the next enemy. If this damage kills the next enemy, you will lose no time moving through that cell. <b>Maximum of 30 levels.</b>",
-			max: 30
+			tooltip: "You have overcome the otherworldly objective of obtaining Overkill, outstanding! Each level of this perk will allow 0.5% of your overkill damage to harm the next enemy. If this damage kills the next enemy, you will lose no time moving through that cell. <b>Maximum of 999 levels because why not.</b>",
+			max: 999
 		},
 		Resourceful: {
 			level: 0,
@@ -2636,10 +2647,11 @@ var toReturn = {
 		Coordinated: {
 			level: 0,
 			locked: true,
-			priceBase: 150000,
+			priceBase: 10000,
 			modifier: 0.98,
 			heliumSpent: 0,
 			currentSend: 1,
+			specialGrowth: 1.1,
 			onChange: function (overrideLevel) {
 				var newValue = 1;
 				var level = (overrideLevel) ? this.level + this.levelTemp : this.level;
@@ -2856,15 +2868,16 @@ var toReturn = {
 			radLevel: 0,
 			radSpent: 0,
 			modifier: 0.1,
-			priceBase: 25,
+			priceBase: 26,
 			heliumSpent: 0,
+			specialGrowth: 1.1,
 			tooltip: "You've built quite a few houses and you're getting pretty good at it. Bringing your expertise in construction back through the portal will allow you to house 10% more Trimps per level <b>than the current amount (compounds)</b>."
 		},
 		Artisanistry: {
 			level: 0,
 			locked: true,
 			modifier: 0.05,
-			priceBase: 15,
+			priceBase: 1,
 			radLevel: 0,
 			radSpent: 0,
 			radLocked: true,
@@ -2886,10 +2899,10 @@ var toReturn = {
 		Agility: {
 			level: 0,
 			modifier: 0.05,
-			priceBase: 4,
+			priceBase: 1,
 			heliumSpent: 0,
-			tooltip: "Crank your portal into overdrive, increasing the clock speed of the Universe. Each level reduces the time between Trimp and Bad Guy attacks by 5% <b>of the current time (compounds)</b>. <b>Maximum of 20 levels.</b>",
-			max: 20,
+			tooltip: "Crank your portal into overdrive, increasing the clock speed of the Universe. Each level reduces the time between Trimp and Bad Guy attacks by 5% <b>of the current time (compounds)</b>. <b>Maximum of 999 levels becuase why not.</b>",
+			max: 999,
 			radLevel: 0,
 			radSpent: 0,
 			locked: false,
@@ -2932,10 +2945,10 @@ var toReturn = {
 		},
 		//trapThings main
 		Packrat: {
-			modifier: 0.2,
+			modifier: 0.9,
 			heliumSpent: 0,
-			tooltip: "Study the ancient, secret Trimp methods of hoarding. Each level increases the amount of stuff you can shove in each Barn, Shed, and Forge by 20%.",
-			priceBase: 3,
+			tooltip: "Study the ancient, secret Trimp methods of hoarding. Each level increases the amount of stuff you can shove in each Barn, Shed, and Forge by 90%.",
+			priceBase: 1,
 			level: 0,
 			radLevel: 0,
 			radSpent: 0,
@@ -8110,11 +8123,11 @@ var toReturn = {
 				name: "Crit Chance, additive",
 				currentBonus: 0,
 				heirloopy: true,
-				steps: [[1.4,2.6,0.2],[1.4,2.6,0.2],[1.4,2.6,0.2],[2.6,5,0.2],[5,7.4,0.2],[7.4,9.8,0.2],[9.8,12.2,0.2],[12.3,15.9,0.3],[20,30,0.5],[30,50,0.5],[50,80,0.25],[80,95,0.3],[95,115,0.4]],
+				steps: [[14,26,2],[14,26,2],[14,26,2],[26,50,2],[50,74,2],[74,98,2],[74,100,2],[74,120,3],[75,140,5],[100,200,5],[120,220,25],[150,300,3],[160,320,4]],
 				filter: function () {
 					return (!game.portal.Relentlessness.locked);
 				},
-				max: [30,30,30,30,30,30,30,30,100,125,200,260,335]
+				max: [300,300,300,300,300,300,300,300,1000,1250,2000,2600,3350]
 			},
 			voidMaps: {
 				name: "Void Map Drop Chance",
@@ -8123,8 +8136,8 @@ var toReturn = {
 				specialDescription: function(modifier){
 					return "*Void Map Drop Chance on Hazardous and higher Heirlooms has a lower percentage than previous Heirloom tiers, but also causes 1 extra Void Map to drop every 10th zone you clear."
 				},
-				steps: [[5,7,0.5],[5,7,0.5],[5,7,0.5],[8,11,0.5],[12,16,0.5],[17,22,0.5],[24,30,0.5],[32,38,0.5],[40,50,0.25],[50,60,0.25],[5,7,0.1],[8,12,0.1],[12,17,0.1]],
-				max: [50,50,50,50,50,50,50,50,80,99,40,50,60]
+				steps: [[50,70,5],[50,70,5],[50,70,5],[80,110,5],[120,160,5],[170,220,5],[240,300,5],[320,380,5],[400,500,5],[500,600,5],[500,700,1],[600,800,1],[600,900,1]],
+				max: [500,500,500,500,500,500,500,500,800,9999,4000,5000,6000]
 			},
 			plaguebringer: {
 				name: "Plaguebringer",
@@ -8284,8 +8297,8 @@ var toReturn = {
 				wood: [40, 1.2]
 			},
 			oc: 40,
-			health: 4,
-			healthCalculated: 4,
+			health: 469,
+			healthCalculated: 469,
 			blockNow: false,
 			block: 1.5,
 			blockCalculated: 1.5,
@@ -8297,7 +8310,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [40, 1.2]
+				metal: [40, 1.1]
 			},
 			oc: 40,
 			attack: 2,
@@ -8310,7 +8323,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [55, 1.2]
+				metal: [55, 1.1]
 			},
 			oc: 55,
 			health: 6,
@@ -8324,7 +8337,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [80, 1.2]
+				metal: [80, 1.1]
 			},
 			oc: 80,
 			attack: 3,
@@ -8337,7 +8350,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [100, 1.2]
+				metal: [100, 1.1]
 			},
 			oc: 100,
 			health: 10,
@@ -8351,7 +8364,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [140, 1.2]
+				metal: [140, 1.1]
 			},
 			oc: 140,
 			attack: 4,
@@ -8364,7 +8377,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [160, 1.2]
+				metal: [160, 1.1]
 			},
 			oc: 160,
 			health: 14,
@@ -8378,7 +8391,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [230, 1.2]
+				metal: [230, 1.1]
 			},
 			oc: 230,
 			attack: 7,
@@ -8391,7 +8404,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [275, 1.2]
+				metal: [275, 1.1]
 			},
 			oc: 275,
 			health: 23,
@@ -8405,7 +8418,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [375, 1.2]
+				metal: [375, 1.1]
 			},
 			oc: 375,
 			attack: 9,
@@ -8418,7 +8431,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [415, 1.2]
+				metal: [415, 1.1]
 			},
 			oc: 415,
 			health: 35,
@@ -8431,7 +8444,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [450, 1.2]
+				metal: [450, 1.08]
 			},
 			oc: 450,
 			attack: 15,
@@ -8444,7 +8457,7 @@ var toReturn = {
 			modifier: 1,
 			level: 0,
 			cost: {
-				metal: [500, 1.2]
+				metal: [500, 1.08]
 			},
 			oc: 500,
 			health: 60,
@@ -8624,6 +8637,104 @@ var toReturn = {
 			health: 0.8,
 			fast: true
 		},
+		pimp: {
+			location: "All",
+			attack: 4,
+			health: 0.2,
+			fast: true
+		},
+		healerimp: {
+			location: "All",
+			attack: 0.1,
+			health: 4,
+			fast: true,
+			loot: function() {game.global.soldierHealth+=game.global.soldierHealthMax*0.1;}
+		},
+		randomstatimp: {
+			location: "All",
+			attack: Math.random()*3,
+			health: Math.random()*3,
+			fast: Math.random() < 0.5 ? true : false,
+			loot: function() {
+					game.badGuys.randomstatimp.attack=Math.random()*3;
+game.badGuys.randomstatimp.health=Math.random()*3;
+game.badGuys.randomstatimp.attack=Math.random()*3;
+game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
+							
+
+
+						}
+		},
+
+		
+
+		simp: {
+			location: "All",
+			attack: 0.2,
+			health: 4,
+			fast: true,
+			loot: function (level) {
+				if (Math.random() < 0.2) {
+				amt = rewardResource("metal", 69, level);
+				message("you got " + prettify(amt) + " bars of metal from simping!", "Loot", "*cubes", null, 'primary');
+				}
+		}
+		},
+		fatguyimp: {
+			location: "All",
+			attack: 1.1,
+			health: 4,
+			fast: true,
+			loot: function (level) {
+				
+				amt = rewardResource("food", -1.5, level);
+				message("oh no! that fat guy ate " + prettify(-amt) + " food!", "Loot", "apple", null, 'primary');
+				
+		}
+		},
+
+		nerdimp: {
+			location: "All",
+			attack: 1.1,
+			health: 4,
+			fast: true,
+			loot: function (level) {
+				
+				amt = (game.resources.food.owned+game.resources.metal.owned+game.resources.wood.owned)**0.4;
+				game.resources.science.owned+=amt;
+				message("nerdimp dropped " + prettify(amt) + " scince!", "Loot", "*cogs", null, 'primary');
+				
+		}
+		},
+
+		
+		
+		brianlieksangelaimp: {
+			location: "All",
+			attack: 1.6,
+			health: 0.9,
+			fast: false,
+			loot: function (level) {
+				rand = Math.floor(3*Math.random());
+				if (rand==0) {
+				amt = rewardResource("metal", Math.random() < 0.1 ? (Math.random() < 0.1 ? 2499 : 99) : 9, level);
+				message("you got " + prettify(amt) + " metal for confirming on discord that brian lieks angela!", "Loot", "*cubes", null, 'primary');
+				}
+						if (rand==1) {
+				amt = rewardResource("wood", Math.random() < 0.1 ? (Math.random() < 0.1 ? 2499 : 99) : 9, level);
+				message("you got " + prettify(amt) + " wood for confirming on discord that brian lieks angela!", "Loot", "tree-deciduous", null, 'primary');
+				}
+						if (rand==2) {
+				amt = rewardResource("food", Math.random() < 0.1 ? (Math.random() < 0.1 ? 2499 : 99) : 9, level);
+				message("you got " + prettify(amt) + " food for confirming on discord that brian lieks angela!", "Loot", "apple", null, 'primary');
+				}
+				
+		}
+		},
+
+
+
+
 		Gorillimp: {
 			location: "All",
 			attack: 0.9,
@@ -8654,10 +8765,23 @@ var toReturn = {
 			health: 1.1,
 			fast: true,
 			loot: function (level) {
-				var amt = rewardResource("food", 0.5, level, true);
+				var amt = rewardResource("food", 10, level, true);
 				message("That Chickimp dropped " + prettify(amt) + " food!", "Loot", "apple", null, 'primary');
 			}
 		},
+		"return of the simp": {
+			location: "Maps",
+			attack: 0.4,
+			health: 5,
+			fast: true,
+			loot: function (level) {
+				if (Math.random() < 0.1) {
+				var amt = rewardResource("metal", 420, level, true);
+				message("you earned " + prettify(amt) + " metal from simping!", "Loot", "apple", null, 'primary');
+				}
+			}
+		},
+
 		Hippopotamimp: {
 		   location: "Sea",
 		   attack: 1.4,
@@ -9664,7 +9788,7 @@ var toReturn = {
 			fast: false,
 			loot: function () {
 				message("Your Trimps managed to pull 1 perfectly preserved bone from that Skeletimp!", "Loot", "italic", null, "bone");
-				game.global.b++;
+				game.global.b+=1;
 				game.global.lastSkeletimp = new Date().getTime();
 				updateSkeleBtn();
 			}
@@ -9677,8 +9801,8 @@ var toReturn = {
 			health: 2.5,
 			fast: false,
 			loot: function () {
-				message("That was a pretty big Skeletimp. Your Trimps scavenged the remains and found 2 perfectly preserved bones!", "Loot", "italic", null, "bone");
-				game.global.b += 2;
+				message("That was a pretty big Skeletimp. Your Trimps scavenged the remains and found 4 perfectly preserved bones!", "Loot", "italic", null, "bone");
+				game.global.b += 4;
 				game.global.lastSkeletimp  = new Date().getTime();
 				updateSkeleBtn();
 			}
@@ -10062,9 +10186,9 @@ var toReturn = {
 				fadeIn("portalBtn", 10);
 				if (game.global.runningChallengeSquared) return;
 				fadeIn("helium", 10);
-				addHelium(45);
+				addHelium(450);
 				if (!fromGenerator){
-					message("<span class='" + heliumIcon() + "'></span> You were able to extract 45 " + heliumOrRadon(true) + "s from that Blimp! Now that you know how to do it, you'll be able to extract " + resource + " from normal Blimps.", "Story");
+					message("<span class='" + heliumIcon() + "'></span> You were able to extract 450 " + heliumOrRadon(true) + "s from that Blimp! Now that you know how to do it, you'll be able to extract " + resource + " from normal Blimps.", "Story");
 				}
 				if (game.global.challengeActive == "Metal"){
 					game.challenges.Metal.onComplete();
@@ -11506,8 +11630,8 @@ var toReturn = {
 			AP: true,
 			tooltip: "Has room for $incby$ more lovely Trimp{s}. All Trimp housing has enough workspaces for only half of the Trimps that can live there.",
 			cost: {
-				food: [125, 1.24],
-				wood: [75, 1.24]
+				food: [125, 1.024],
+				wood: [75, 1.024]
 			},
 			increase: {
 				what: "trimps.max",
@@ -11522,9 +11646,9 @@ var toReturn = {
 			AP: true,
 			tooltip: "A better house for your Trimps! Each house supports up to $incby$ more Trimp{s}.",
 			cost: {
-				food: [1500, 1.22],
-				wood: [750, 1.22],
-				metal: [150, 1.22]
+				food: [1500, 1.022],
+				wood: [750, 1.022],
+				metal: [150, 1.022]
 			},
 			increase: {
 				what: "trimps.max",
@@ -11539,10 +11663,10 @@ var toReturn = {
 			AP: true,
 			tooltip: "A pretty sick mansion for your Trimps to live in. Each Mansion supports $incby$ more Trimp{s}.",
 			cost: {
-				gems: [100, 1.2],
-				food: [3000, 1.2],
-				wood: [2000, 1.2],
-				metal: [500, 1.2]
+				gems: [100, 1.02],
+				food: [3000, 1.02],
+				wood: [2000, 1.02],
+				metal: [500, 1.02]
 
 			},
 			increase: {
@@ -11558,10 +11682,10 @@ var toReturn = {
 			AP: true,
 			tooltip: "A fancy hotel for many Trimps to live in. Complete with room service and a mini bar. Supports $incby$ Trimp{s}.",
 			cost: {
-				gems: [2000, 1.18],
-				food: [10000, 1.18],
-				wood: [12000, 1.18],
-				metal: [5000, 1.18]
+				gems: [2000, 1.018],
+				food: [10000, 1.018],
+				wood: [12000, 1.018],
+				metal: [5000, 1.018]
 
 			},
 			increase: {
@@ -11577,10 +11701,10 @@ var toReturn = {
 			AP: true,
 			tooltip: "A huge resort for your Trimps to live in. Sucks for the ones still stuck in huts. Supports $incby$ Trimp{s}.",
 			cost: {
-				gems: [20000, 1.16],
-				food: [100000, 1.16],
-				wood: [120000, 1.16],
-				metal: [50000, 1.16]
+				gems: [20000, 1.016],
+				food: [100000, 1.016],
+				wood: [120000, 1.016],
+				metal: [50000, 1.016]
 
 			},
 			increase: {
@@ -11596,9 +11720,9 @@ var toReturn = {
 			AP: true,
 			tooltip: "A Gateway to another dimension, where your Trimps can sleep and work. Supports $incby$ Trimp{s}.",
 			cost: {
-				fragments: [3000, 1.14],
-				gems: [20000, 1.14],
-				metal: [75000, 1.14]
+				fragments: [3000, 1.014],
+				gems: [20000, 1.014],
+				metal: [75000, 1.014]
 			},
 			increase: {
 				what: "trimps.max",
@@ -11614,8 +11738,8 @@ var toReturn = {
 			AP: true,
 			tooltip: "Use your crazy, helium-cooled, easy-to-aim wormhole generator to create easy-to-travel links to other colonizable planets where your Trimps can sleep and work. Each supports $incby$ Trimps. <b>This building costs helium to create.</b>",
 			cost: {
-				helium: [10, 1.075],
-				metal: [100000, 1.1]
+				helium: [1, 1.010005],
+				metal: [100000, 1.01]
 			},
 			increase:{
 				what: "trimps.max",
@@ -11630,7 +11754,7 @@ var toReturn = {
 			AP: true,
 			tooltip: "Each collector allows you to harvest more of the power of your home star, allowing your Trimps to colonize a larger chunk of your solar system. Each supports $incby$ Trimp{s}.",
 			cost: {
-				gems: [500000000000, 1.12]
+				gems: [500000000000, 1.012]
 			},
 			increase: {
 				what: "trimps.max",
@@ -11647,8 +11771,8 @@ var toReturn = {
 			blockU2: true,
 			tooltip: "Create a gigantic Warpstation, capable of housing tons of Trimps and instantly transporting them back to the home planet when needed. Supports $incby$ Trimps.",
 			cost: {
-				gems: [100000000000000, 1.4],
-				metal: [1000000000000000, 1.4]
+				gems: [100000000000000, 1.04],
+				metal: [1000000000000000, 1.04]
 			},
 			increase: {
 				what: "trimps.max",
@@ -11687,7 +11811,7 @@ var toReturn = {
 			blockU2: true,
 			tooltip: "A building where your Trimps can work out. Each Gym increases the amount of damage each trimp can block by $incby$~",
 			cost: {
-				wood: [400, 1.185]
+				wood: [400, 1.06]
 			},
 			increase: {
 			what: "global.block",
@@ -13023,7 +13147,7 @@ var toReturn = {
 			done: 0,
 			cost: {
 				resources: {
-					science: [200, 1.4],
+					science: [20, 1.4],
 					metal: [500, 1.4]
 				}
 			},
@@ -13038,7 +13162,7 @@ var toReturn = {
 			done: 0,
 			cost: {
 				resources: {
-					science: [200, 1.4],
+					science: [20, 1.4],
 					wood: [500, 1.4]
 				}
 			},
@@ -13053,7 +13177,7 @@ var toReturn = {
 			done: 0,
 			cost: {
 				resources: {
-					science: [200, 1.4],
+					science: [20, 1.4],
 					food: [500, 1.4]
 				}
 			},

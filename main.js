@@ -5620,7 +5620,7 @@ function breed() {
 		if (potencyModifiers.book > 0) potencyMod *= Math.pow(1.1, potencyModifiers.book);
 		if (potencyModifiers.nursery > 0) potencyMod *= Math.pow(1.01, potencyModifiers.nursery);
 		if (potencyModifiers.venimp) potencyMod *= Math.pow(1.003, potencyModifiers.venimp);
-		if (potencyModifiers.brokenPlanet) potencyMod /= 10;
+		if (potencyModifiers.brokenPlanet) potencyMod /= 1;
 		if (potencyModifiers.pheromones > 0) potencyMod *= 1 + potencyModifiers.pheromones * game.portal.Pheromones.modifier;
 		if (potencyModifiers.quickTrimps) potencyMod *= 2;
 		if (challenges.Daily && potencyModifiers.dailyDysfunctional > 0) potencyMod *= potencyModifiers.dailyDysfunctional;
@@ -10002,8 +10002,8 @@ function buildGrid() {
 		}
 	}
 	canSkeletimp = false;
-	var skeleMin = 2700000;
-	if (game.talents.skeletimp2.purchased) skeleMin -= 600000
+	var skeleMin = 300000;
+	if (game.talents.skeletimp2.purchased) skeleMin -= 100000
 	if ((new Date().getTime() - game.global.lastSkeletimp) >= skeleMin) canSkeletimp = true;
 	var corrupteds = [];
 	for (var w = 0; w < 100; w++){
@@ -13713,13 +13713,13 @@ function getSpireStats(cellNum, name, what, origAmt){
 		return origAmt * Math.pow(200, game.global.spireLevel + 1);
 	}
 	var base = (what == "attack") ? game.global.getEnemyAttack(100, null, true) : (game.global.getEnemyHealth(100, null, true) * 2);
-	var mod = (what == "attack") ? 1.17 : 1.14;
+	var mod = (what == "attack") ? 1.12 : 1.04;
 	var spireNum = checkIfSpireWorld(true);
 	if (spireNum > 1){
 		var modRaiser = 0;
 		modRaiser += ((spireNum - 1) / 100);
-		if (what == "attack") modRaiser *= 8;
-		if (what == "health") modRaiser *= 2;
+		if (what == "attack") modRaiser *= 9;
+		if (what == "health") modRaiser *= 1;
 		mod += modRaiser;
 	}
 	base *= Math.pow(mod, cellNum);
@@ -13740,7 +13740,7 @@ function finishU2Spire(){
 
 function deadInSpire(){
 	game.global.spireDeaths++;
-	if (game.global.spireDeaths >= 10) {
+	if (game.global.spireDeaths >= 69420) {
 		var msgText = "";
 		if (game.global.universe == 2) msgText = "You're suddenly standing outside of the Spire with a feeling that it's best to move on for now. Scruffy seems confident that you'll get it next time! (You made it to Cell " + (game.global.lastClearedCell + 2) + " on Floor " + game.global.spireLevel + ")";
 		else msgText = "You're not yet ready. Maybe you'll be of use in the next lifetime (You made it to cell " + (game.global.lastClearedCell + 2) + ")."

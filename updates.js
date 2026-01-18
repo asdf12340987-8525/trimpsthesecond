@@ -1158,7 +1158,7 @@ function tooltip(what, isItIn, event, textString, attachFunction, numCheck, rena
 	if (what == "The Improbability"){		
 		tooltipText = "<span class='planetBreakMessage'>That shouldn't have happened. There should have been a Blimp there. Something is growing unstable.</span>";
 		if (!game.global.autoUpgradesAvailable) tooltipText += "<br/><br/><span class='planetBreakMessage'><b>Your Trimps seem to understand that they'll need to help out more, and you realize how to permanently use them to automate upgrades!<b></span><br/>";
-		costText = "<span class='planetBreakDescription'><span class='bad'>Trimp breed speed reduced by a factor of 10. 20% of enemy damage can now penetrate your block.</span><span class='good'> You have unlocked a new upgrade to learn a Formation. Helium harvested per Zone is increased by a factor of 5. Equipment cost is dramatically cheaper. Creating modified maps is now cheaper, and your scientists have found new ways to improve maps! You have access to the 'Trimp' challenge!<span></span>";
+		costText = "<span class='planetBreakDescription'><span class='bad'>Trimp breed speed reduced by a factor of 1. 20% of enemy damage can now penetrate your block.</span><span class='good'> You have unlocked a new upgrade to learn a Formation. Helium harvested per Zone is increased by a factor of 5. Equipment cost is dramatically cheaper. Creating modified maps is now cheaper, and your scientists have found new ways to improve maps! You have access to the 'Trimp' challenge!<span></span>";
 		if (game.global.challengeActive == "Corrupted") costText += "<br/><br/><span class='corruptedBadGuyName'>Looks like the Corruption is starting early...</span>";
 		costText += "<hr/><div class='maxCenter'><div class='btn btn-info' id='confirmTooltipBtn' role=button tabindex=0 onclick='cancelTooltip()'>I'll be fine</div><div class='btn btn-danger' onclick='cancelTooltip(); message(\"Sorry\", \"Notices\")'>I'm Scared</div></div>"
 		game.global.lockTooltip = true;
@@ -1208,8 +1208,8 @@ function tooltip(what, isItIn, event, textString, attachFunction, numCheck, rena
 		if (portalUniverse == 1 && game.global.totalRadonEarned == 0) tooltipText += "<br/><br/><b>You will earn Radon instead of Helium in Universe 2. It's an entirely new Universe to explore!</b>"
 	}
 	if (what == "The Spire"){	
-		tooltipText = "<span class='planetBreakMessage'>The Spire looms menacingly above you, and you take in a deep breath of corruption. You take a look back at your Trimps to help gather some courage, and you push the door open. You slowly walk inside and are greeted by an incredibly loud, deep, human voice.<br/><br/><b>Do you know what you face? If you are defeated ten times in this place, you shall be removed from this space. If you succeed, then you shall see the light of knowledge that you seek.</b></span>";
-		tooltipText += "<br/><hr/><span class='planetBreakDescription'><span class='bad'>This Zone is considerably more difficult than the previous and next Zones. If 10 groups of Trimps die in combat while in the spire, the world will return to normal.</span> <span class='good'>Each cell gives more and more helium. Every 10th cell gives a larger reward, and increases all loot gained until your next portal by 2% (including helium).</span></span>";
+		tooltipText = "<span class='planetBreakMessage'>The Spire looms menacingly above you, and you take in a deep breath of corruption. You take a look back at your Trimps to help gather some courage, and you push the door open. You slowly walk inside and are greeted by an incredibly loud, deep, human voice.<br/><br/><b>Do you know what you face? If you are defeated sixty nine thousand four hundred twenty times in this place, you shall be removed from this space. If you succeed, then you shall see the light of knowledge that you seek.</b></span>";
+		tooltipText += "<br/><hr/><span class='planetBreakDescription'><span class='bad'>This Zone is considerably more difficult than the previous and next Zones. If 69,420 groups of Trimps die in combat while in the spire, the world will return to normal.</span> <span class='good'>Each cell gives more and more helium. Every 10th cell gives a larger reward, and increases all loot gained until your next portal by 2% (including helium).</span></span>";
 		if (game.options.menu.mapsOnSpire.enabled) tooltipText += "<br/><hr/>You were moved to Maps to protect your limited chances at the spire. You can disable this in settings!";
 		costText = "<div class='maxCenter'><div class='btn btn-info' onclick='startSpire(true)'>The Universe Awaits</div></div>";
 		game.global.lockTooltip = true;
@@ -4079,7 +4079,12 @@ function prettifyTiny(number){
 function prettify(number) {
 	var numberTmp = number;
 	if (!isFinite(number)) return "<span class='icomoon icon-infinity'></span>";
-	if (number >= 1000 && number < 10000) return Math.floor(number);
+if (!game.options.menu.long.enabled) {
+	if (number >= 1000 && number < 1000000) return Math.floor(number);
+}
+
+if (number >= 1000 && number < 10000) return Math.floor(number);
+        
 	if (number == 0) return prettifySub(0);
 	if (number < 0) return "-" + prettify(-number);
 	if (number < 0.005) return (+number).toExponential(2);
@@ -4109,8 +4114,116 @@ function prettify(number) {
 			suffix = suffices[Math.ceil(base / suffices.length) - 2] + suffices[suf2];
 		}
 	}
+
+	
 	else {
 		var suffices = [
+    " thousand",
+    " million",
+    " billion",
+    " trillion",
+    " quadrillion",
+    " quintillion",
+    " sextillion",
+    " septillion",
+    " octillion",
+    " nonillion",
+    " decillion",
+    " undecillion",
+    " duodecillion",
+    " tredecillion",
+    " quattuordecillion",
+    " quindecillion",
+    " sexdecillion",
+    " septendecillion",
+    " octodecillion",
+    " novemdecillion",
+    " vigintillion",
+    " unvigintillion",
+    " duovigintillion",
+    " trevigintillion",
+    " quattuorvigintillion",
+    " quinvigintillion",
+    " sexvigintillion",
+    " septenvigintillion",
+    " octovigintillion",
+    " novemvigintillion",
+    " trigintillion",
+    " untrigintillion",
+    " duotrigintillion",
+    " tretrigintillion",
+    " quattuortrigintillion",
+    " quintrigintillion",
+    " sextrigintillion",
+    " septentrigintillion",
+    " octotrigintillion",
+    " novemtrigintillion",
+    " quadragintillion",
+    " unquadragintillion",
+    " duoquadragintillion",
+    " trequadragintillion",
+    " quattuorquadragintillion",
+    " quinquadragintillion",
+    " sexquadragintillion",
+    " septenquadragintillion",
+    " octoquadragintillion",
+    " novemquadragintillion",
+    " quinquagintillion",
+    " unquinquagintillion",
+    " duoquinquagintillion",
+    " trequinquagintillion",
+    " quattuorquinquagintillion",
+    " quinquinquagintillion",
+    " sexquinquagintillion",
+    " septenquinquagintillion",
+    " octoquinquagintillion",
+    " novemquinquagintillion",
+    " sexagintillion",
+    " unsexagintillion",
+    " duosexagintillion",
+    " tresexagintillion",
+    " quattuorsexagintillion",
+    " quinsexagintillion",
+    " sexsexagintillion",
+    " septensexagintillion",
+    " octosexagintillion",
+    " novemsexagintillion",
+    " septuagintillion",
+    " unseptuagintillion",
+    " duoseptuagintillion",
+    " treseptuagintillion",
+    " quattuorseptuagintillion",
+    " quinseptuagintillion",
+    " sexseptuagintillion",
+    " septenseptuagintillion",
+    " octoseptuagintillion",
+    " novemseptuagintillion",
+    " octogintillion",
+    " unoctogintillion",
+    " duooctogintillion",
+    " treoctogintillion",
+    " quattuoroctogintillion",
+    " quinoctogintillion",
+    " sexoctogintillion",
+    " septenoctogintillion",
+    " octooctogintillion",
+    " novemoctogintillion",
+    " nonagintillion",
+    " unnonagintillion",
+    " duononagintillion",
+    " trenonagintillion",
+    " quattuornonagintillion",
+    " quinnonagintillion",
+    " sexnonagintillion",
+    " septennonagintillion",
+    " octononagintillion",
+    " novemnonagintillion",
+    " centillion",
+    " uncentillion"
+]
+
+if (game.options.menu.long.enabled) {
+var suffices = [
 			'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'Ud',
             'Dd', 'Td', 'Qad', 'Qid', 'Sxd', 'Spd', 'Od', 'Nd', 'V', 'Uv', 'Dv',
             'Tv', 'Qav', 'Qiv', 'Sxv', 'Spv', 'Ov', 'Nv', 'Tg', 'Utg', 'Dtg', 'Ttg',
@@ -4123,6 +4236,10 @@ function prettify(number) {
             'Nog', 'Na', 'Un', 'Dn', 'Tn', 'Qan', 'Qin', 'Sxn', 'Spn', 'On',
             'Nn', 'Ct', 'Uc'
 		];
+
+}
+
+
 		var suffix;
 		let hybrid = (game.options.menu.standardNotation.enabled != 4 ? false : game.global.hybridExponentType)
 		if (!game.options.menu.standardNotation.enabled ||  // Scientific
