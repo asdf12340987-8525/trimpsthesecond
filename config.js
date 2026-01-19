@@ -8735,8 +8735,8 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 		charlie_kirk: {
 			name: "WE ARE CHARLIE KIRK"
 			location: "All",
-			attack: 1.6,
-			health: 0.9,
+			attack: 2.1,
+			health: 0.4,
 			fast: false,
 			loot: function (level) {
 				
