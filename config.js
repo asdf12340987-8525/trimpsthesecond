@@ -12565,7 +12565,7 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 				prestigeEquipment("Shield", false, true);
 				equipment.blockNow = true;
 				equipment.tooltip = game.equipment.Shield.blocktip;
-				equipment.blockCalculated = Math.round(equipment.block * Math.pow(1.19, ((equipment.prestige - 1) * game.global.prestige.block) + 1));
+				equipment.blockCalculated = Math.round(equipment.block * Math.pow(1.20, ((equipment.prestige - 1) * game.global.prestige.block) + 1));
 				levelEquipment("Shield", 1);
 			}
 		},
