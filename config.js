@@ -8732,7 +8732,7 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 		}
 			
 		},
-		"67 kid: {
+		"67 kid": {
 			location: "All",
 			attack: 6,
 			health: 7,
