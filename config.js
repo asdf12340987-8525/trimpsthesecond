@@ -8688,7 +8688,7 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 			loot: function (level) {
 				
 				amt = rewardResource("food", -1.5, level);
-				message("oh no! that fat guy ate " + prettify(-amt) + " food!", "Loot", "apple", null, 'primary');
+				message(" mr. fat guy ate " + prettify(-amt) + " food :((", "Loot", "apple", null, 'primary');
 				
 		}
 		},
@@ -8730,7 +8730,25 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 				}
 				
 		}
+			
 		},
+		charlie_kirk: {
+			name: "WE ARE CHARLIE KIRK"
+			location: "All",
+			attack: 1.6,
+			health: 0.9,
+			fast: false,
+			loot: function (level) {
+				
+			
+				message("WE CARRY THE FLAME", "Loot", "*cubes", null, 'primary');
+				
+				
+				
+		}
+			
+		},
+		
 
 
 
