@@ -8710,28 +8710,52 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 		
 		
 		brianlieksangelaimp: {
-			location: "All",
+			location: "World",
 			attack: 1.6,
 			health: 0.9,
 			fast: false,
 			loot: function (level) {
 				rand = Math.floor(3*Math.random());
 				if (rand==0) {
-				amt = rewardResource("metal", Math.random() < 0.1 ? (Math.random() < 0.1 ? 2499 : 99) : 9, level);
+				amt = rewardResource("metal", Math.random() < 0.1 ? (Math.random() < 0.005 ? 2499 : 29) : 4, level);
 				message("you got " + prettify(amt) + " metal for confirming on discord that brian lieks angela!", "Loot", "*cubes", null, 'primary');
 				}
 						if (rand==1) {
-				amt = rewardResource("wood", Math.random() < 0.1 ? (Math.random() < 0.1 ? 2499 : 99) : 9, level);
+				amt = rewardResource("wood", Math.random() < 0.1 ? (Math.random() < 0.005 ? 2499 : 29) : 4, level);
 				message("you got " + prettify(amt) + " wood for confirming on discord that brian lieks angela!", "Loot", "tree-deciduous", null, 'primary');
 				}
 						if (rand==2) {
-				amt = rewardResource("food", Math.random() < 0.1 ? (Math.random() < 0.1 ? 2499 : 99) : 9, level);
+				amt = rewardResource("food", Math.random() < 0.1 ? (Math.random() < 0.005 ? 2499 : 29) : 4, level);
 				message("you got " + prettify(amt) + " food for confirming on discord that brian lieks angela!", "Loot", "apple", null, 'primary');
 				}
 				
 		}
 			
 		},
+		"67 kid: {
+			location: "All",
+			attack: 6,
+			health: 7,
+			fast: false,
+			loot: function (level) {
+				rand = Math.floor(3*Math.random());
+				if (rand==0) {
+				amt = rewardResource("metal", 67, level);
+				message("67 kid gives you " + prettify(amt) + " metal!", "Loot", "*cubes", null, 'primary');
+				}
+						if (rand==1) {
+				amt = rewardResource("wood", 67, level);
+				message("67 kid gives you " + prettify(amt) + " wood for confirming on discord that brian lieks angela!", "Loot", "tree-deciduous", null, 'primary');
+				}
+						if (rand==2) {
+				amt = rewardResource("food", 67, level);
+				message("67 kid gives you " + prettify(amt) + " food for confirming on discord that brian lieks angela!", "Loot", "apple", null, 'primary');
+				}
+				
+		}
+			
+		},
+		
 		"WE ARE CHARLIE KIRK": {
 			name: "WE ARE CHARLIE KIRK",
 			location: "All",
@@ -8748,6 +8772,25 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 		}
 			
 		},
+// i broke my save
+		charlie_kirk: {
+			name: "WE ARE CHARLIE KIRK",
+			locked: 1,
+			location: "All",
+			attack: 2.1,
+			health: 0.4,
+			fast: false,
+			loot: function (level) {
+				
+			
+				message("WE CARRY THE FLAME", "Loot", "*cubes", null, 'primary');
+				
+				
+				
+		}
+			
+		},
+		
 		
 
 
