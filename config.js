@@ -8733,7 +8733,7 @@ game.badGuys.randomstatimp.fast=Math.random() < 0.5 ? true : false;
 			
 		},
 		charlie_kirk: {
-			name: "WE ARE CHARLIE KIRK"
+			name: "WE ARE CHARLIE KIRK",
 			location: "All",
 			attack: 2.1,
 			health: 0.4,
