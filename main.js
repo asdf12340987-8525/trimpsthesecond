@@ -5904,12 +5904,12 @@ function prestigeEquipment(what, fromLoad = false, noInc = false) {
 	const prestigeMod = equipment.prestige >= 4 ? (equipment.prestige - 3) * 0.85 + 2 : equipment.prestige - 1;
 	const resource = what === 'Shield' ? 'wood' : 'metal';
 	const cost = equipment.cost[resource];
-	cost[0] = Math.round(equipment.oc * Math.pow(1.069, prestigeMod * game.global.prestige.cost + 1));
+	cost[0] = Math.round(equipment.oc * Math.pow(1.068, prestigeMod * game.global.prestige.cost + 1));
 
 	const stat = equipment.blockNow ? 'block' : typeof equipment.health !== 'undefined' ? 'health' : 'attack';
 	if (!fromLoad) game.global[stat] -= equipment[stat + 'Calculated'] * equipment.level;
 	if (!fromLoad) game.global.difs[stat] -= equipment[stat + 'Calculated'] * equipment.level;
-	equipment[stat + 'Calculated'] = Math.round(equipment[stat] * Math.pow(1.19, (equipment.prestige - 1) * game.global.prestige[stat] + 1));
+	equipment[stat + 'Calculated'] = Math.round(equipment[stat] * Math.pow(1.20, (equipment.prestige - 1) * game.global.prestige[stat] + 1));
 
 	// No need to touch level if it's newNum
 	if (fromLoad) return;
